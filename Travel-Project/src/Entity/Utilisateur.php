@@ -44,6 +44,11 @@ class Utilisateur implements UserInterface, \Serializable
      */
     private $description;
 
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $activation_token;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -159,6 +164,18 @@ class Utilisateur implements UserInterface, \Serializable
     public function setDescription(string $description): self
     {
         $this->description = $description;
+
+        return $this;
+    }
+
+    public function getActivationToken(): ?string
+    {
+        return $this->activation_token;
+    }
+
+    public function setActivationToken(?string $activation_token): self
+    {
+        $this->activation_token = $activation_token;
 
         return $this;
     }
