@@ -24,7 +24,10 @@ class UtilisateurFixtures extends Fixture
             $this->encoder->encodePassword($user,'0000')
         );
 
+
         $user->setEmail('admin@gmail.com');
+
+        $user->setDescription('admin');
 
         $manager->persist($user);
 
