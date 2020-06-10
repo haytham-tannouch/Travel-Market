@@ -25,7 +25,7 @@ class UtilisateurFixtures extends Fixture
         );
 
         $user->setEmail('wail@gmail.com');
-        $user->setRoles(['ROLE_USER']);
+        $user->setRoles('ROLE_USER');
 
         $manager->persist($user);
 
@@ -38,7 +38,7 @@ class UtilisateurFixtures extends Fixture
         );
 
         $user1->setEmail('admin@gmail.com');
-        $user1->setRoles(['ROLE_ADMIN']);
+        $user1->setRoles('ROLE_ADMIN');
 
         $manager->persist($user1);
 

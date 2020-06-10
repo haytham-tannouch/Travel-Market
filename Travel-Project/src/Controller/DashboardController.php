@@ -16,4 +16,5 @@ class DashboardController extends Controller
             'controller_name' => 'DashboardController',
         ]);
     }
+
 }
