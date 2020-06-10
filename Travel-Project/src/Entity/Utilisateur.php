@@ -45,6 +45,13 @@ class Utilisateur implements UserInterface, \Serializable
      */
     private $activation_token;
 
+    /**
+     * @var array
+     *
+     * @ORM\Column(type="json_array", nullable=true)
+     */
+    private $roles = [];
+
     public function getId(): ?int
     {
         return $this->id;
@@ -88,12 +95,20 @@ class Utilisateur implements UserInterface, \Serializable
 
     /**
      * @inheritDoc
+     *
+     * @return array (Role\string)[] The user roles
      */
-    public function getRoles()
+    public function getRoles(): array
     {
-        return[
-          'ROLE_ADMIN'
-        ];
+        $tmpRoles = $this->roles;
+        $tmpRoles[] ='ROLE_USER';
+        return array_unique($tmpRoles);
+    }
+
+    public function setRoles($roles): self
+    {
+        $this->roles=$roles;
+        return $this;
     }
 
     /**

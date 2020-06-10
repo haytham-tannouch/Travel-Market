@@ -19,7 +19,7 @@ security:
                 login_path: login
                 check_path: login
                 provider: connexion_provider
-                default_target_path: dashboard
+                default_target_path: after_login
 
             logout:
                 path: /logout
@@ -38,4 +38,5 @@ security:
     access_control:
         #- { path: ^/, roles: IS_AUTHENTICATED_ANONYMOUSLY }
         # - { path: ^/login  , roles: IS_AUTHENTICATED_ANONYMOUSLY }
-         - { path: ^/dashboard, roles: ROLE_ADMIN }
+        - { path: ^/dashboard, roles: ROLE_ADMIN }
+        - { path: ^/user, roles: ROLE_USER }

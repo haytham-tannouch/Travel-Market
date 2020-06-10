@@ -19,17 +19,28 @@ class UtilisateurFixtures extends Fixture
     public function load(ObjectManager $manager)
     {
         $user =new Utilisateur();
-        $user->setUsername('admin');
+        $user->setUsername('wail');
         $user->setPassword(
             $this->encoder->encodePassword($user,'0000')
         );
 
-
-        $user->setEmail('admin@gmail.com');
-
-        $user->setDescription('admin');
+        $user->setEmail('wail@gmail.com');
+        $user->setRoles(['ROLE_USER']);
 
         $manager->persist($user);
+
+        $manager->flush();
+
+        $user1 =new Utilisateur();
+        $user1->setUsername('admin');
+        $user1->setPassword(
+            $this->encoder->encodePassword($user1,'0000')
+        );
+
+        $user1->setEmail('admin@gmail.com');
+        $user1->setRoles(['ROLE_ADMIN']);
+
+        $manager->persist($user1);
 
         $manager->flush();
     }

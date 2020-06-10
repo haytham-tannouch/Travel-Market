@@ -33,6 +33,21 @@ class SecurityController extends Controller
     }
 
     /**
+     * @Route("afterlogin", name="after_login")
+     */
+    public function afterlogin()
+    {
+        if($this->isGranted('ROLE_ADMIN'))
+        {
+            return $this->redirectToRoute('dashboard');
+        }
+        else if($this->isGranted('ROLE_USER'))
+        {
+            return $this->redirectToRoute('user');
+        }
+    }
+
+    /**
      * @Route("/logout" ,name="logout")
      */
     public function logout()

@@ -34,7 +34,7 @@ class InscriptionController extends AbstractController
                 )
             );
 
-
+            $user->setRoles(['ROLE_USER']);
             // On génère un token et on l'enregistre
             $user->setActivationToken(md5(uniqid()));
 
