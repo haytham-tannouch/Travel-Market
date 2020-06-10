@@ -54,7 +54,7 @@ class SecurityController extends Controller
     /**
      * @Route("afterlogin", name="after_login")
      */
-    public function afterlogin()
+    public function after_login()
     {
         if($this->isGranted('ROLE_ADMIN'))
         {
