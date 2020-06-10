@@ -1,8 +1,1 @@
-ann:
-    resource: "@AnnBundle/Resources/config/routing.yml"
-    prefix:   /
-
-annuaire:
-    resource: "@AnnuaireBundle/Resources/config/routing.yml"
-    prefix:   /
 

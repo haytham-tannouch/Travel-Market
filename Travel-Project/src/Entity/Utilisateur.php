@@ -39,10 +39,6 @@ class Utilisateur implements UserInterface, \Serializable
      */
     private $reset_token;
 
-    /**
-     * @ORM\Column(type="string", length=255)
-     */
-    private $description;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
@@ -156,17 +152,6 @@ class Utilisateur implements UserInterface, \Serializable
         return $this;
     }
 
-    public function getDescription(): ?string
-    {
-        return $this->description;
-    }
-
-    public function setDescription(string $description): self
-    {
-        $this->description = $description;
-
-        return $this;
-    }
 
     public function getActivationToken(): ?string
     {

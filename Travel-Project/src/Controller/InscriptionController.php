@@ -3,18 +3,23 @@
 namespace App\Controller;
 
 use App\Entity\Utilisateur;
+use App\Form\RegistrationFormType;
+use App\Security\UsersAuthenticator;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\Cache\Adapter\AbstractAdapter;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 use Symfony\Component\Security\Guard\GuardAuthenticatorHandler;
 
-class InscriptionController extends Controller
+class InscriptionController extends AbstractController
 {
     /**
      * @Route("/inscription", name="inscription")
      */
-    public function inscriptionRequest ($request, UserPasswordEncoderInterface $passwordEncoder, GuardAuthenticatorHandler $guardHandler, UsersAuthenticator $authenticator,\Swift_Mailer $mailer): Response
+    public function inscription(Request $request, UserPasswordEncoderInterface $passwordEncoder, GuardAuthenticatorHandler $guardHandler, UsersAuthenticator $authenticator,\Swift_Mailer $mailer):Response
     {
         $user = new Utilisateur();
         $form = $this->createForm(RegistrationFormType::class, $user);
@@ -25,9 +30,11 @@ class InscriptionController extends Controller
             $user->setPassword(
                 $passwordEncoder->encodePassword(
                     $user,
-                    $form->get('plainPassword')->getData()
+                    $form->get('password')->getData()
                 )
             );
+
+
             // On génère un token et on l'enregistre
             $user->setActivationToken(md5(uniqid()));
 
@@ -37,15 +44,10 @@ class InscriptionController extends Controller
 
             // do anything else you need here, like send an email
 
-            return $guardHandler->authenticateUserAndHandleSuccess(
-                $user,
-                $request,
-                $authenticator,
-                'main' // firewall name in security.yaml
-            );
+
+
         }
 
-        // do anything else you need here, like send an email
         // On crée le message
         $message = (new \Swift_Message('Nouveau compte'))
             // On attribue l'expéditeur
@@ -62,19 +64,21 @@ class InscriptionController extends Controller
         ;
         $mailer->send($message);
 
-
-        return $this->render('registration/register.html.twig', [
-            'registrationForm' => $form->createView(),
+        return $this->render('/registration/register.html.twig', [
+            'registrationForm' => $form->createView()
         ]);
     }
 
     /**
-     * @Route("/activation/{token}", name="activation")
+     * @Route("/activation", name="activation")
      */
-    public function activation($token, Utilisateur $users)
+    public function activation(Request $request):Response
     {
+        $entityManager = $this->getDoctrine()->getManager();
+
         // On recherche si un utilisateur avec ce token existe dans la base de données
-        $user = $users->findOneBy(['activation_token' => $token]);
+        $users = $this->getDoctrine()->getRepository(Utilisateur::class);
+        $user = $users->findOneBy(['activation_token' => $request->query->get('token')]);
 
         // Si aucun utilisateur n'est associé à ce token
         if(!$user){
@@ -84,7 +88,6 @@ class InscriptionController extends Controller
 
         // On supprime le token
         $user->setActivationToken(null);
-        $entityManager = $this->getDoctrine()->getManager();
         $entityManager->persist($user);
         $entityManager->flush();
 
@@ -92,7 +95,7 @@ class InscriptionController extends Controller
         $this->addFlash('message', 'Utilisateur activé avec succès');
 
         // On retourne à l'accueil
-        return $this->redirectToRoute('accueil');
+        return $this->redirectToRoute('login');
     }
 
 }
