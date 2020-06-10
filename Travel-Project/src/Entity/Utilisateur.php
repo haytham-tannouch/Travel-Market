@@ -39,7 +39,6 @@ class Utilisateur implements UserInterface, \Serializable
      */
     private $reset_token;
 
-
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
      */
@@ -110,7 +109,6 @@ class Utilisateur implements UserInterface, \Serializable
         $this->roles=$roles;
         return $this;
     }
-
     /**
      * @inheritDoc
      */
