@@ -18,7 +18,7 @@ security:
                 login_path: login
                 check_path: login
                 provider: connexion_provider
-
+                default_target_path: after_login
 
             logout:
                 path: /logout
